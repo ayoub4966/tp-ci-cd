@@ -9,40 +9,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # --- ÉTAPE 1 : RÉCUPÉRATION DU CODE ---
       - name: Recuperer le code du depot
         uses: actions/checkout@v4
 
-      # --- ÉTAPE 2 : LOGIN DOCKER HUB ---
       - name: Se connecter a Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # --- ÉTAPE 3 : BUILD ET PUSH DES IMAGES ---
+      # --- ÉTAPE BACKEND (Chemin corrigé : springboot/app) ---
       - name: Build et Push Backend
         uses: docker/build-push-action@v5
         with:
-          context: ./springboot
-          file: ./springboot/Dockerfile
+          context: ./springboot/app
+          file: ./springboot/app/Dockerfile
           push: true
-          # Remplace 'TON_PSEUDO' par ton vrai pseudo Docker Hub si le secret ne marche pas
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-backend:latest
 
+      # --- ÉTAPE FRONTEND (Chemin : angular-app) ---
       - name: Build et Push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./angular-app
           file: ./angular-app/Dockerfile
           push: true
-          # Remplace 'TON_PSEUDO' par ton vrai pseudo Docker Hub si le secret ne marche pas
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-frontend:latest
 
-      # --- ÉTAPE 4 : TEST DU DÉPLOIEMENT (PARTIE 3 DU TP) ---
+      # --- ÉTAPE TEST (PARTIE 3) ---
       - name: Tester le lancement avec Docker Compose
         run: |
           docker compose up -d
-          echo "Attente du démarrage des services..."
           sleep 30
           docker compose ps
