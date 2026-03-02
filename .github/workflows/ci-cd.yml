@@ -1,19 +1,37 @@
-# Nom du workflow tel qu'il apparaîtra dans l'onglet Actions
 name: CI/CD Pipeline TP
 
-# 1. Configuration du déclencheur (Trigger)
-# Le workflow se lance à chaque "push" sur la branche "main"
 on:
   push:
     branches: ["main"]
 
-# Définition des tâches (jobs)
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest # On utilise un serveur Linux (Runner) fourni par GitHub
+    runs-on: ubuntu-latest
 
     steps:
-      # 2. Étape de récupération du code (Checkout)
-      # Cette action officielle GitHub permet de copier ton code dans le runner
+      # Étape 1 : Récupération du code
       - name: Recuperer le code du depot
         uses: actions/checkout@v4
+
+      # Étape 2.1 : Connexion à Docker Hub (Utilise tes secrets)
+      - name: Se connecter a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Étape 2.2 : Build et Push du Backend
+      - name: Build et Push Backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./springboot
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-backend:latest
+
+      # Étape 2.3 : Build et Push du Frontend
+      - name: Build et Push Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./angular-app
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-frontend:latest
