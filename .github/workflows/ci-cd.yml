@@ -1,0 +1,19 @@
+# Nom du workflow tel qu'il apparaîtra dans l'onglet Actions
+name: CI/CD Pipeline TP
+
+# 1. Configuration du déclencheur (Trigger)
+# Le workflow se lance à chaque "push" sur la branche "main"
+on:
+  push:
+    branches: ["main"]
+
+# Définition des tâches (jobs)
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # On utilise un serveur Linux (Runner) fourni par GitHub
+
+    steps:
+      # 2. Étape de récupération du code (Checkout)
+      # Cette action officielle GitHub permet de copier ton code dans le runner
+      - name: Recuperer le code du depot
+        uses: actions/checkout@v4
