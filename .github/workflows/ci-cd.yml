@@ -26,7 +26,7 @@ jobs:
         with:
           context: ./springboot
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-backend:latest
+          tags: ayouub1234/tp-backend:latest
 
       # Étape 2.3 : Build et Push du Frontend
       - name: Build et Push Frontend
@@ -34,4 +34,4 @@ jobs:
         with:
           context: ./angular-app
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-frontend:latest
+          tags: ayouub1234/tp-frontend:latest
