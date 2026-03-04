@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://172.16.90.135:8081/",
+    "target": "http://localhost:8081/",
     "secure": false
   }
 }
