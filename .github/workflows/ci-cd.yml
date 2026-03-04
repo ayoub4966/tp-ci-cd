@@ -25,7 +25,6 @@ jobs:
           cd springboot/app
           mvn clean package -DskipTests
 
-      # --- LE RESTE NE CHANGE PAS (mais on vérifie les chemins) ---
       - name: Se connecter a Docker Hub
         uses: docker/login-action@v3
         with:

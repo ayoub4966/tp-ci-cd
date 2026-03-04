@@ -1,13 +1,11 @@
 version: "3.3"
 services:
   angular-app:
-    # Doit correspondre au tag envoyé sur Docker Hub
     image: ayouub1234/tp-frontend:latest
     ports:
       - "4200:80"
 
   spring-boot-app:
-    # Doit correspondre au tag envoyé sur Docker Hub
     image: ayouub1234/tp-backend:latest
     ports:
       - "8081:8081"
